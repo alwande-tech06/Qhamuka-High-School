@@ -1,0 +1,65 @@
+{% extends "shared/dashboard_layout.html" %}
+{% block title %}Gallery Management — Qhamuka Admin{% endblock %}
+{% block page_heading %}Gallery Management{% endblock %}
+{% block rail_gallery %}is-active{% endblock %}
+
+{% block content %}
+
+<div class="grid gap-8 lg:grid-cols-[360px_1fr]">
+
+  <!-- ===================== UPLOAD FORM ===================== -->
+  <div class="card p-6 h-fit">
+    <h2 class="font-semibold mb-4">Upload Image</h2>
+    <!-- enctype required for file uploads via Flask -->
+    <form action="{{ url_for('admin.gallery') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
+      {{ form.hidden_tag() }}
+
+      <!-- Styled file input -->
+      <div class="field">
+        <label class="block text-sm font-medium mb-1.5" for="image">Image File</label>
+        <label for="image" class="flex flex-col items-center justify-center gap-2 border-2 border-dashed border-[var(--line)] rounded-lg py-8 cursor-pointer hover:border-[var(--gold)] transition">
+          <span class="text-sm text-slate-500">Click to choose an image</span>
+          {{ form.image(id="image", class="hidden", accept="image/*") }}
+        </label>
+        {% for error in form.image.errors %}<p class="text-xs text-[var(--crimson)] mt-1">{{ error }}</p>{% endfor %}
+      </div>
+
+      <div class="field">
+        <label class="block text-sm font-medium mb-1.5" for="caption">Caption</label>
+        {{ form.caption(id="caption", placeholder="Describe the photo") }}
+      </div>
+
+      <div class="field">
+        <label class="block text-sm font-medium mb-1.5" for="event_name">Category</label>
+        {{ form.event_name(id="event_name") }}
+      </div>
+
+      {{ form.submit(class="btn btn-gold w-full justify-center") }}
+    </form>
+  </div>
+
+  <!-- ===================== MEDIA GRID ===================== -->
+  <div class="card p-6">
+    <h2 class="font-semibold mb-4">Uploaded Media</h2>
+    <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+      {% for photo in photos %}
+      <figure class="rounded-lg overflow-hidden border border-[var(--line)]">
+        <img src="{{ url_for('static', filename=photo.image_path) }}" alt="{{ photo.caption or 'Gallery image' }}" class="w-full aspect-[4/3] object-cover" />
+        <figcaption class="px-3 py-2 flex items-center justify-between">
+          <span class="text-sm truncate">{{ photo.caption or photo.event_name }}</span>
+          <form action="{{ url_for('admin.delete_image', image_id=photo.id) }}" method="POST" class="inline"
+                onsubmit="return confirm('Remove this image?');">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <button type="submit" class="text-xs text-[var(--crimson)] hover:underline">Remove</button>
+          </form>
+        </figcaption>
+      </figure>
+      {% else %}
+      <div class="col-span-full text-center text-slate-400 py-10">No images uploaded yet.</div>
+      {% endfor %}
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

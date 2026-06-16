@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Announcements — Qhamuka High School{% endblock %}
+
+{% block content %}
+
+<section class="container-x pt-14 pb-6">
+  <p class="crest-rule mb-3">Notice Board</p>
+  <h1 class="text-4xl md:text-5xl font-semibold max-w-2xl">All Announcements</h1>
+  <p class="mt-4 text-lg text-slate-600 max-w-2xl">
+    Stay up to date with the latest news, events and notices from Qhamuka High School.
+  </p>
+</section>
+
+<section class="container-x py-10">
+  <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+    {% for announcement in announcements %}
+    <article class="card p-6 flex flex-col">
+      {% set cat = announcement.category %}
+      <span class="self-start text-xs font-semibold px-2.5 py-1 rounded-full
+        {% if cat == 'Academic' %}bg-[var(--crimson-soft)] text-[var(--crimson)]
+        {% elif cat in ['Sports', 'Events'] %}bg-[var(--gold-soft)] text-[var(--gold-dark)]
+        {% else %}bg-[var(--slate-soft)] text-[var(--slate-deep)]{% endif %}">{{ cat }}</span>
+      <h2 class="mt-4 text-lg font-semibold">{{ announcement.title }}</h2>
+      <p class="mt-2 text-sm text-slate-600 flex-1">{{ announcement.content }}</p>
+      <time class="mt-4 text-xs text-slate-400">{{ announcement.date_posted | datefmt('%-d %B %Y') }}</time>
+    </article>
+    {% else %}
+    <div class="col-span-full card p-10 text-center text-slate-500">
+      No announcements have been posted yet. Please check back soon.
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}Qhamuka High School — Work towards Excellence{% endblock %}
+{% block nav_home %}is-active{% endblock %}
+
+
+{% block content %}
+
+<!-- ===================== HERO ===================== -->
+<style>.hero{background-image:url("{{ url_for('static', filename='images/hero.jpg') }}")}</style>
+<section class="hero" style="margin-top:-5rem">
+  <div class="container-x pt-44 pb-24 md:pt-52 md:pb-32 max-w-3xl">
+    <p class="eyebrow text-[var(--gold)] mb-4">Somopho Reserve &middot; Empangeni &middot; KZN</p>
+    <h1 class="text-4xl md:text-6xl font-semibold leading-[1.05]">
+      A school built on discipline, community and the will to excel.
+    </h1>
+    <p class="mt-6 text-slate-300 text-lg max-w-xl">
+      Qhamuka High School educates the next generation of leaders from the heart of KwaZulu-Natal -
+      where every learner is known, challenged and supported.
+    </p>
+    <div class="mt-8 flex flex-wrap gap-3">
+      <a href="{{ url_for('main.admissions') }}" class="btn btn-primary">Apply to Qhamuka</a>
+      <a href="{{ url_for('main.about') }}" class="btn btn-ghost text-white border-white/30 hover:bg-white/10">Our Story</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== MOTTO BANNER ===================== -->
+<section class="bg-[var(--slate-rail)] text-white">
+  <div class="container-x py-5 flex items-center justify-center text-center">
+    <p class="font-semibold tracking-wide" style="font-family:var(--font-display)">
+      Work towards Excellence
+    </p>
+  </div>
+</section>
+
+<!-- ===================== LATEST ANNOUNCEMENTS ===================== -->
+<section class="container-x py-16">
+  <div class="flex items-end justify-between mb-8">
+    <div>
+      <p class="crest-rule mb-3">Notice Board</p>
+      <h2 class="text-3xl font-semibold">Latest Announcements</h2>
+    </div>
+    <a href="{{ url_for('main.announcements') }}" class="hidden sm:inline-flex btn btn-ghost">View all</a>
+  </div>
+
+  <div class="grid gap-6 md:grid-cols-3">
+    {% for announcement in announcements %}
+    <article class="card p-6 reveal flex flex-col">
+      {% set cat = announcement.category %}
+      <span class="self-start text-xs font-semibold px-2.5 py-1 rounded-full
+        {% if cat == 'Academic' %}bg-[var(--crimson-soft)] text-[var(--crimson)]
+        {% elif cat in ['Sports', 'Events'] %}bg-[var(--gold-soft)] text-[var(--gold-dark)]
+        {% else %}bg-[var(--slate-soft)] text-[var(--slate-deep)]{% endif %}">{{ cat }}</span>
+      <h3 class="mt-4 text-lg font-semibold">{{ announcement.title }}</h3>
+      <p class="mt-2 text-sm text-slate-600 flex-1">{{ announcement.content | truncate(120) }}</p>
+      <time class="mt-4 text-xs text-slate-400">{{ announcement.date_posted | datefmt('%-d %B %Y') }}</time>
+    </article>
+    {% else %}
+    <div class="col-span-full card p-8 text-center text-slate-500">
+      No announcements have been posted yet. Please check back soon.
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- ===================== QUICK STATS STRIP ===================== -->
+<section class="bg-[var(--slate-soft)]">
+  <div class="container-x py-14 grid gap-8 sm:grid-cols-3 text-center">
+    <div class="reveal">
+      <div class="stat-value"><span data-count="589">0</span></div>
+      <p class="mt-2 text-sm uppercase tracking-wider text-slate-500">Learners</p>
+    </div>
+    <div class="reveal">
+      <div class="stat-value gold"><span data-count="21">0</span></div>
+      <p class="mt-2 text-sm uppercase tracking-wider text-slate-500">Educators</p>
+    </div>
+    <div class="reveal">
+      <div class="stat-value slate"><span data-count="5">0</span></div>
+      <p class="mt-2 text-sm uppercase tracking-wider text-slate-500">Grades (8–12)</p>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

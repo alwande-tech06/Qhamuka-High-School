@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}Admin — Qhamuka High School{% endblock %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
+</head>
+<body class="min-h-screen bg-[var(--slate-soft)]">
+
+  <div class="flex min-h-screen">
+
+    <!-- ===================== SIDEBAR RAIL ===================== -->
+    <aside data-rail
+           class="admin-rail w-64 shrink-0 fixed lg:static inset-y-0 left-0 z-50 -translate-x-full lg:translate-x-0 transition-transform duration-200 p-4 flex flex-col">
+      <div class="flex items-center gap-3 px-2 py-3 mb-4">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Qhamuka High School" class="h-10 w-auto object-contain">
+        <div class="leading-tight">
+          <p class="text-white font-semibold text-sm">Qhamuka Admin</p>
+          <p class="text-[11px] text-slate-400">Management Console</p>
+        </div>
+      </div>
+
+      <nav class="space-y-1 flex-1">
+        <a href="{{ url_for('admin.dashboard') }}" class="{% block rail_dashboard %}{% endblock %}">Dashboard</a>
+        <a href="{{ url_for('admin.announcements') }}" class="{% block rail_announcements %}{% endblock %}">Announcements</a>
+        <a href="{{ url_for('admin.gallery') }}" class="{% block rail_gallery %}{% endblock %}">Gallery</a>
+        <a href="{{ url_for('admin.submissions') }}" class="{% block rail_submissions %}{% endblock %}">Submissions</a>
+      </nav>
+
+      <a href="{{ url_for('auth.logout') }}" class="mt-4 text-sm text-slate-400 hover:text-white px-3 py-2">Sign out</a>
+    </aside>
+
+    <!-- ===================== MAIN AREA ===================== -->
+    <div class="flex-1 min-w-0">
+      <!-- Topbar -->
+      <header class="bg-white border-b border-[var(--line)] sticky top-0 z-30">
+        <div class="flex items-center justify-between px-5 h-14">
+          <button data-rail-toggle class="lg:hidden p-2 rounded-md hover:bg-[var(--slate-soft)]" aria-label="Toggle sidebar">
+            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+          </button>
+          <h1 class="font-semibold text-[var(--charcoal)]">{% block page_heading %}Dashboard{% endblock %}</h1>
+          <div class="flex items-center gap-3 text-sm">
+            <span class="text-slate-500 hidden sm:inline">Signed in as Admin</span>
+            <span class="w-8 h-8 rounded-full bg-[var(--slate-soft)] grid place-items-center font-semibold text-[var(--slate-deep)]">A</span>
+          </div>
+        </div>
+      </header>
+
+      <main class="p-5 md:p-8">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <div class="mb-6 space-y-2">
+              {% for category, message in messages %}
+                <div class="text-sm rounded-lg px-4 py-3 border
+                  {% if category == 'error' %}bg-[var(--crimson-soft)] text-[var(--crimson)] border-[var(--crimson)]/20
+                  {% else %}bg-green-50 text-green-700 border-green-200{% endif %}">{{ message }}</div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

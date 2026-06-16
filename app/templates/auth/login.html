@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login — Qhamuka High School</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
+</head>
+<body class="min-h-screen bg-[var(--slate-soft)] p-5">
+
+  <!-- Top-left logo linking home -->
+  <a href="{{ url_for('main.home') }}" class="fixed top-4 left-5">
+    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Qhamuka High School" class="h-14 w-auto object-contain">
+  </a>
+
+  <div class="w-full max-w-md mx-auto pt-24">
+    <div class="card p-7">
+      <!-- Brand -->
+      <div class="text-center mb-6">
+        <h1 class="text-2xl font-semibold">Administration Portal</h1>
+        <p class="text-sm text-slate-500 mt-1">Qhamuka High School &middot; staff access only</p>
+      </div>
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="mb-4 text-sm rounded-lg px-3 py-2 border
+              {% if category == 'error' %}text-[var(--crimson)] bg-[var(--crimson-soft)] border-[var(--crimson)]/20
+              {% else %}text-green-700 bg-green-50 border-green-200{% endif %}">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      <form action="{{ url_for('auth.login') }}" method="POST" class="space-y-5">
+        {{ form.hidden_tag() }}
+        <div class="field">
+          <label class="block text-sm font-medium mb-1.5" for="username">Username</label>
+          {{ form.username(id="username", autocomplete="username", placeholder="Enter username") }}
+        </div>
+        <div class="field">
+          <label class="block text-sm font-medium mb-1.5" for="password">Password</label>
+          {{ form.password(id="password", autocomplete="current-password", placeholder="Enter password") }}
+        </div>
+        <div class="flex items-center justify-between text-sm">
+          <label class="flex items-center gap-2 text-slate-600">
+            {{ form.remember_me(class="rounded border-slate-300") }} Remember me
+          </label>
+          <a href="#" class="text-[var(--crimson)] hover:underline">Forgot password?</a>
+        </div>
+        {{ form.submit(class="btn btn-primary w-full justify-center") }}
+      </form>
+    </div>
+
+  </div>
+
+</body>
+</html>

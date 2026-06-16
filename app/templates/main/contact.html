@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block title %}Contact — Qhamuka High School{% endblock %}
+{% block nav_contact %}is-active{% endblock %}
+
+{% block content %}
+
+<section class="container-x pt-14 pb-6">
+  <p class="crest-rule mb-3">Get in Touch</p>
+  <h1 class="text-4xl md:text-5xl font-semibold">Contact Us</h1>
+  <p class="mt-5 text-lg text-slate-600 max-w-2xl">
+    Questions about admissions, academics or school life? Send us a message and our office will respond as soon as possible.
+  </p>
+</section>
+
+<section class="container-x py-10 grid gap-10 lg:grid-cols-2">
+
+  <!-- ===================== CONTACT FORM ===================== -->
+  <div class="reveal">
+    <div class="card p-6 md:p-8">
+      <!-- On submit, this POSTs to main.contact which validates server-side via WTForms. -->
+      <form data-contact-form action="{{ url_for('main.contact') }}" method="POST" novalidate class="space-y-5">
+        {{ form.hidden_tag() }}
+
+        <div class="field">
+          <label class="block text-sm font-medium mb-1.5" for="name">Full Name</label>
+          {{ form.name(id="name", data_validate="name", placeholder="e.g. Nomvula Dlamini") }}
+          {% for error in form.name.errors %}<p class="error-text" style="display:block">{{ error }}</p>{% endfor %}
+          <p class="error-text">Please enter your full name.</p>
+        </div>
+
+        <div class="field">
+          <label class="block text-sm font-medium mb-1.5" for="email">Email Address</label>
+          {{ form.email(id="email", data_validate="email", placeholder="you@example.com") }}
+          {% for error in form.email.errors %}<p class="error-text" style="display:block">{{ error }}</p>{% endfor %}
+          <p class="error-text">Enter a valid email address.</p>
+        </div>
+
+        <div class="field">
+          <label class="block text-sm font-medium mb-1.5" for="message">Message</label>
+          {{ form.message(id="message", rows="5", data_validate="message", placeholder="Write your message here...") }}
+          {% for error in form.message.errors %}<p class="error-text" style="display:block">{{ error }}</p>{% endfor %}
+          <p class="error-text">Message should be at least 10 characters.</p>
+        </div>
+
+        {{ form.submit(class="btn btn-primary w-full justify-center") }}
+      </form>
+    </div>
+  </div>
+
+  <!-- ===================== CONTACT DETAILS + MAP ===================== -->
+  <div class="reveal space-y-6">
+    <div class="card p-6 space-y-4">
+      <div class="flex gap-3">
+        <span class="w-9 h-9 rounded-lg bg-[var(--crimson-soft)] text-[var(--crimson)] grid place-items-center">&#9873;</span>
+        <div>
+          <p class="font-medium">Address</p>
+          <p class="text-sm text-slate-600">Somopho Reserve, Empangeni, KwaZulu-Natal</p>
+        </div>
+      </div>
+      <div class="flex gap-3">
+        <span class="w-9 h-9 rounded-lg bg-[var(--gold-soft)] text-[var(--gold-dark)] grid place-items-center">&#9742;</span>
+        <div>
+          <p class="font-medium">Telephone</p>
+          <a href="tel:+27716575353" class="text-sm text-slate-600 hover:text-[var(--crimson)]">+27 71 657 5353</a>
+        </div>
+      </div>
+      <div class="flex gap-3">
+        <span class="w-9 h-9 rounded-lg bg-[var(--slate-soft)] text-[var(--slate-deep)] grid place-items-center">&#9993;</span>
+        <div>
+          <p class="font-medium">Email</p>
+          <a href="mailto:info@qhamukahigh.co.za" class="text-sm text-slate-600 hover:text-[var(--crimson)]">info@qhamukahigh.co.za</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card overflow-hidden">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2084.7376229920314!2d31.846683456503882!3d-28.688855322249474!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1efa1236c8eb8821%3A0x9757dfbb9a875897!2sQhamuka%20Secondary%20School!5e0!3m2!1sen!2sza!4v1781643903509!5m2!1sen!2sza" class="w-full aspect-[4/3]" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+  </div>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}Qhamuka High School{% endblock %}</title>
+  <meta name="description" content="Qhamuka High School — Somopho Reserve, Empangeni, KZN. Work towards Excellence." />
+
+  <!-- Tailwind (Play CDN for development; compile to static/css/main.css for production) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
+  {% block head %}{% endblock %}
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- ===================== HEADER ===================== -->
+  <header class="sticky top-0 z-40">
+    <div class="container-x flex items-center justify-between h-20">
+      <!-- Brand -->
+      <a href="{{ url_for('main.home') }}" class="flex items-center gap-2">
+        <img src="{{ url_for('static', filename='images/logo.png') }}"
+             alt="Qhamuka High School"
+             class="h-16 w-auto object-contain"
+             onerror="this.style.visibility='hidden'">
+        <span class="leading-tight">
+          <span class="brand-name block font-semibold text-[var(--charcoal)]" style="font-family:var(--font-display)">Qhamuka High School</span>
+          <span class="brand-tagline block text-[11px] uppercase tracking-[.16em] text-[var(--gold-dark)]">Work towards Excellence</span>
+        </span>
+      </a>
+
+      <!-- Desktop nav -->
+      <nav class="hidden md:flex items-center gap-7 text-sm">
+        <a href="{{ url_for('main.home') }}" class="nav-link {% block nav_home %}{% endblock %}">Home</a>
+        <a href="{{ url_for('main.about') }}" class="nav-link {% block nav_about %}{% endblock %}">About</a>
+        <a href="{{ url_for('main.admissions') }}" class="nav-link {% block nav_admissions %}{% endblock %}">Admissions</a>
+        <a href="{{ url_for('main.academics') }}" class="nav-link {% block nav_academics %}{% endblock %}">Academics</a>
+        <a href="{{ url_for('main.gallery') }}" class="nav-link {% block nav_gallery %}{% endblock %}">Gallery</a>
+        <a href="{{ url_for('main.contact') }}" class="nav-link {% block nav_contact %}{% endblock %}">Contact</a>
+        <a href="{{ url_for('auth.login') }}" class="btn btn-primary text-sm">Admin Login</a>
+      </nav>
+
+      <!-- Burger -->
+      <button data-burger aria-label="Toggle menu" aria-expanded="false"
+              class="md:hidden p-2 rounded-md hover:bg-[var(--slate-soft)]">
+        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+
+    <!-- Mobile menu -->
+    <nav data-mobile-menu class="hidden md:hidden border-t border-[var(--line)] bg-white">
+      <div class="container-x py-3 flex flex-col gap-1 text-sm">
+        <a href="{{ url_for('main.home') }}" class="py-2 nav-link">Home</a>
+        <a href="{{ url_for('main.about') }}" class="py-2 nav-link">About</a>
+        <a href="{{ url_for('main.admissions') }}" class="py-2 nav-link">Admissions</a>
+        <a href="{{ url_for('main.academics') }}" class="py-2 nav-link">Academics</a>
+        <a href="{{ url_for('main.gallery') }}" class="py-2 nav-link">Gallery</a>
+        <a href="{{ url_for('main.contact') }}" class="py-2 nav-link">Contact</a>
+        <a href="{{ url_for('auth.login') }}" class="btn btn-primary mt-2 justify-center">Admin Login</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ===================== MAIN ===================== -->
+  <main class="flex-1">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="container-x mt-4 space-y-2">
+          {% for category, message in messages %}
+            <div class="text-sm rounded-lg px-4 py-3 border
+              {% if category == 'error' %}bg-[var(--crimson-soft)] text-[var(--crimson)] border-[var(--crimson)]/20
+              {% else %}bg-green-50 text-green-700 border-green-200{% endif %}">
+              {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="bg-[var(--slate-rail)] text-slate-300 mt-16">
+    <div class="container-x py-12 grid gap-10 md:grid-cols-3">
+      <div>
+        <div class="flex items-center gap-3 mb-3">
+          <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Qhamuka High School" class="h-12 w-auto object-contain">
+          <span class="text-white font-semibold" style="font-family:var(--font-display)">Qhamuka High School</span>
+        </div>
+        <p class="text-sm text-slate-400">A place of learning grounded in community and discipline, in the heart of KwaZulu-Natal.</p>
+        <p class="mt-4 text-[var(--gold)] font-semibold italic" style="font-family:var(--font-display)">"Work towards Excellence"</p>
+      </div>
+
+      <div>
+        <h3 class="text-white text-sm uppercase tracking-wider mb-3">Visit & Contact</h3>
+        <ul class="space-y-2 text-sm text-slate-400">
+          <li>Somopho Reserve, Empangeni, KwaZulu-Natal</li>
+          <li>Tel: <a href="tel:+27716575353" class="hover:text-[var(--gold)]">+27 71 657 5353</a></li>
+          <li>Email: <a href="mailto:info@qhamukahigh.co.za" class="hover:text-[var(--gold)]">info@qhamukahigh.co.za</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-white text-sm uppercase tracking-wider mb-3">Quick Links</h3>
+        <ul class="space-y-2 text-sm text-slate-400">
+          <li><a href="{{ url_for('main.admissions') }}" class="hover:text-[var(--gold)]">Admissions</a></li>
+          <li><a href="{{ url_for('main.academics') }}" class="hover:text-[var(--gold)]">Academics</a></li>
+          <li><a href="{{ url_for('main.gallery') }}" class="hover:text-[var(--gold)]">Gallery</a></li>
+          <li><a href="{{ url_for('main.contact') }}" class="hover:text-[var(--gold)]">Contact Us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-white/10">
+      <div class="container-x py-4 text-xs text-slate-500 flex flex-col sm:flex-row justify-between gap-2">
+        <span>&copy; <span id="year"></span> Qhamuka High School. All rights reserved.</span>
+        <span>Somopho Reserve &middot; Empangeni &middot; KZN</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

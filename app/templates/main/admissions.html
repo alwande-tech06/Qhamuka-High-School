@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}Admissions — Qhamuka High School{% endblock %}
+{% block nav_admissions %}is-active{% endblock %}
+
+{% block content %}
+
+<section class="container-x pt-14 pb-6">
+  <p class="crest-rule mb-3">Join Qhamuka</p>
+  <h1 class="text-4xl md:text-5xl font-semibold max-w-2xl">Admissions and Registration</h1>
+  <p class="mt-5 text-lg text-slate-600 max-w-2xl">
+    We welcome applications from learners ready to commit to our values of discipline and excellence.
+    Follow the steps below and prepare the required documents before your registration date.
+  </p>
+</section>
+
+<section class="container-x py-10 grid gap-12 lg:grid-cols-2">
+
+  <!-- ===================== REGISTRATION TIMELINE ===================== -->
+  <div class="reveal">
+    <h2 class="text-2xl font-semibold mb-6">Registration Timeline</h2>
+    <ol class="timeline space-y-7">
+      <li class="relative">
+        <span class=""></span>
+        <p class="text-xs font-semibold text-[var(--crimson)] uppercase tracking-wider">August 2026</p>
+        <h3 class="font-semibold mt-1">Applications open</h3>
+        <p class="text-sm text-slate-600 mt-1">Collect or download the application form and begin gathering documents.</p>
+      </li>
+      <li class="relative">
+        <span class=""></span>
+        <p class="text-xs font-semibold text-[var(--crimson)] uppercase tracking-wider">September 2026</p>
+        <h3 class="font-semibold mt-1">Submit application</h3>
+        <p class="text-sm text-slate-600 mt-1">Hand in completed forms with all supporting documents at the front office.</p>
+      </li>
+      <li class="relative">
+        <span class=""></span>
+        <p class="text-xs font-semibold text-[var(--crimson)] uppercase tracking-wider">October 2026</p>
+        <h3 class="font-semibold mt-1">Placement confirmation</h3>
+        <p class="text-sm text-slate-600 mt-1">Successful applicants are notified and invited to an orientation session.</p>
+      </li>
+      <li class="relative">
+        <span class=""></span>
+        <p class="text-xs font-semibold text-[var(--crimson)] uppercase tracking-wider">January 2027</p>
+        <h3 class="font-semibold mt-1">First day of school</h3>
+        <p class="text-sm text-slate-600 mt-1">New learners begin the academic year. Welcome to Qhamuka!</p>
+      </li>
+    </ol>
+  </div>
+
+  <!-- ===================== DOCUMENT CHECKLIST ===================== -->
+  <div>
+    <h2 class="text-2xl font-semibold mb-6">Required Documents</h2>
+    <div class="card p-6">
+      <ul class="space-y-4">
+        <li class="flex gap-3">
+          <span class="mt-0.5 w-5 h-5 rounded-md bg-[var(--gold-soft)] text-[var(--gold-dark)] grid place-items-center text-xs font-bold">&check;</span>
+          <div>
+            <p class="font-medium">Certified copy of learner's birth certificate</p>
+            <p class="text-sm text-slate-500">Must be certified within the last three months.</p>
+          </div>
+        </li>
+        <li class="flex gap-3">
+          <span class="mt-0.5 w-5 h-5 rounded-md bg-[var(--gold-soft)] text-[var(--gold-dark)] grid place-items-center text-xs font-bold">&check;</span>
+          <div>
+            <p class="font-medium">Most recent school report</p>
+            <p class="text-sm text-slate-500">From the learner's current or previous school.</p>
+          </div>
+        </li>
+        <li class="flex gap-3">
+          <span class="mt-0.5 w-5 h-5 rounded-md bg-[var(--gold-soft)] text-[var(--gold-dark)] grid place-items-center text-xs font-bold">&check;</span>
+          <div>
+            <p class="font-medium">Parent / guardian ID copies</p>
+            <p class="text-sm text-slate-500">Certified copies of both parents or the legal guardian.</p>
+          </div>
+        </li>
+        <li class="flex gap-3">
+          <span class="mt-0.5 w-5 h-5 rounded-md bg-[var(--gold-soft)] text-[var(--gold-dark)] grid place-items-center text-xs font-bold">&check;</span>
+          <div>
+            <p class="font-medium">Proof of residence</p>
+            <p class="text-sm text-slate-500">A recent utility bill or affidavit confirming address.</p>
+          </div>
+        </li>
+        <li class="flex gap-3">
+          <span class="mt-0.5 w-5 h-5 rounded-md bg-[var(--gold-soft)] text-[var(--gold-dark)] grid place-items-center text-xs font-bold">&check;</span>
+          <div>
+            <p class="font-medium">Immunisation / clinic card</p>
+            <p class="text-sm text-slate-500">Where applicable for the learner's records.</p>
+          </div>
+        </li>
+      </ul>
+      <a href="{{ url_for('main.contact') }}" class="btn btn-primary mt-6 w-full justify-center">Ask an Admissions Question</a>
+    </div>
+  </div>
+
+</section>
+
+{% endblock %}

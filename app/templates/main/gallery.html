@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Gallery — Qhamuka High School{% endblock %}
+{% block nav_gallery %}is-active{% endblock %}
+
+{% block content %}
+
+<section class="container-x pt-14 pb-6">
+  <p class="crest-rule mb-3">Life at Qhamuka</p>
+  <h1 class="text-4xl md:text-5xl font-semibold">Gallery</h1>
+  <p class="mt-5 text-lg text-slate-600 max-w-2xl">
+    Moments from our classrooms, fields, stages and community a glimpse of everyday life at Qhamuka High School.
+  </p>
+</section>
+
+<!-- ===================== FILTER TABS ===================== -->
+<section class="container-x">
+  <div class="flex flex-wrap gap-2 mb-8">
+    <button class="tab is-active" data-filter="all">All</button>
+    <button class="tab" data-filter="events">Events</button>
+    <button class="tab" data-filter="sports">Sports</button>
+    <button class="tab" data-filter="cultural">Cultural</button>
+    <button class="tab" data-filter="academic">Academic</button>
+  </div>
+</section>
+
+<!-- ===================== PHOTO GRID ===================== -->
+<section class="container-x pb-16">
+  <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    {% for photo in photos %}
+    <figure data-category="{{ photo.event_name | lower }}"
+            data-lightbox-src="{{ url_for('static', filename=photo.image_path) }}"
+            data-lightbox-alt="{{ photo.caption or 'Gallery image' }}"
+            class="group relative overflow-hidden rounded-xl cursor-pointer aspect-[4/3]">
+      <img src="{{ url_for('static', filename=photo.image_path) }}" alt="{{ photo.caption or 'Gallery image' }}" class="w-full h-full object-cover transition group-hover:scale-105" />
+      <figcaption class="absolute inset-x-0 bottom-0 p-3 text-white text-sm bg-gradient-to-t from-black/70 to-transparent">{{ photo.caption }} · {{ photo.event_name }}</figcaption>
+    </figure>
+    {% else %}
+    <div class="col-span-full card p-10 text-center text-slate-500">
+      No photos have been added to the gallery yet.
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- ===================== LIGHTBOX MODAL ===================== -->
+<div class="lightbox" data-lightbox role="dialog" aria-modal="true" aria-label="Image viewer">
+  <button class="lightbox-close" data-lightbox-close aria-label="Close">&times;</button>
+  <img src="" alt="" />
+</div>
+
+{% endblock %}

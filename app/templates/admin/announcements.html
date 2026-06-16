@@ -1,0 +1,90 @@
+{% extends "shared/dashboard_layout.html" %}
+{% block title %}Announcements — Qhamuka Admin{% endblock %}
+{% block page_heading %}Announcements{% endblock %}
+{% block rail_announcements %}is-active{% endblock %}
+
+{% block content %}
+
+<div class="grid gap-8 lg:grid-cols-[1fr_360px]">
+
+  <!-- ===================== MANAGEMENT TABLE ===================== -->
+  <div class="card overflow-hidden">
+    <div class="px-5 py-4 border-b border-[var(--line)] flex items-center justify-between">
+      <h2 class="font-semibold">All Announcements</h2>
+      <span class="text-sm text-slate-500">Showing latest</span>
+    </div>
+    <table class="w-full text-left text-sm">
+      <thead class="bg-[var(--slate-soft)] text-[var(--slate-deep)]">
+        <tr>
+          <th class="px-5 py-3 font-semibold">Title</th>
+          <th class="px-5 py-3 font-semibold">Category</th>
+          <th class="px-5 py-3 font-semibold">Status</th>
+          <th class="px-5 py-3 font-semibold text-right">Actions</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-[var(--line)]">
+        {% for a in announcements %}
+        <tr>
+          <td class="px-5 py-3 font-medium">{{ a.title }}</td>
+          <td class="px-5 py-3">
+            <span class="text-xs px-2 py-0.5 rounded-full
+              {% if a.category == 'Academic' %}bg-[var(--crimson-soft)] text-[var(--crimson)]
+              {% elif a.category in ['Sports', 'Events'] %}bg-[var(--gold-soft)] text-[var(--gold-dark)]
+              {% else %}bg-[var(--slate-soft)] text-[var(--slate-deep)]{% endif %}">{{ a.category }}</span>
+          </td>
+          <td class="px-5 py-3">
+            {% if a.is_published %}
+              <span class="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700">Published</span>
+            {% else %}
+              <span class="text-xs px-2 py-0.5 rounded-full bg-slate-200 text-slate-600">Draft</span>
+            {% endif %}
+          </td>
+          <td class="px-5 py-3 text-right">
+            <form action="{{ url_for('admin.delete_announcement', post_id=a.id) }}" method="POST" class="inline"
+                  onsubmit="return confirm('Delete this announcement?');">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+              <button type="submit" class="text-[var(--crimson)] hover:underline">Delete</button>
+            </form>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="4" class="px-5 py-6 text-center text-slate-400">No announcements yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===================== CREATION FORM ===================== -->
+  <div class="card p-6 h-fit">
+    <h2 class="font-semibold mb-4">New Announcement</h2>
+    <form action="{{ url_for('admin.announcements') }}" method="POST" class="space-y-4">
+      {{ form.hidden_tag() }}
+      <div class="field">
+        <label class="block text-sm font-medium mb-1.5" for="title">Title</label>
+        {{ form.title(id="title", placeholder="Announcement title") }}
+      </div>
+
+      <div class="field">
+        <label class="block text-sm font-medium mb-1.5" for="category">Category</label>
+        {{ form.category(id="category") }}
+      </div>
+
+      <div class="field">
+        <label class="block text-sm font-medium mb-1.5" for="content">Content</label>
+        {{ form.content(id="content", rows="5", placeholder="Write the announcement details...") }}
+      </div>
+
+      <!-- is_published toggle -->
+      <label class="toggle">
+        {{ form.is_published() }}
+        <span class="track"></span>
+        <span class="text-sm font-medium">Publish immediately</span>
+      </label>
+
+      {{ form.submit(class="btn btn-primary w-full justify-center") }}
+    </form>
+  </div>
+
+</div>
+
+{% endblock %}

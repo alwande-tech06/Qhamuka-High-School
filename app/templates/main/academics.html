@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block title %}Academics — Qhamuka High School{% endblock %}
+{% block nav_academics %}is-active{% endblock %}
+
+{% block content %}
+
+<section class="container-x pt-14 pb-6">
+  <p class="crest-rule mb-3">Teaching and Learning</p>
+  <h1 class="text-4xl md:text-5xl font-semibold max-w-2xl">Academics at Qhamuka</h1>
+  <p class="mt-5 text-lg text-slate-600 max-w-2xl">
+    A balanced curriculum that builds strong foundations in languages, commerce, sciences and the humanities,
+    preparing every learner for the National Senior Certificate and beyond.
+  </p>
+</section>
+
+<!-- ===================== KEY METRICS ===================== -->
+<section class="container-x py-8">
+  <div class="grid gap-6 sm:grid-cols-3">
+    <div class="card p-6 reveal text-center">
+      <div class="stat-value"><span data-count="82">0</span><span class="text-2xl align-top">%</span></div>
+      <p class="mt-2 text-sm uppercase tracking-wider text-slate-500">Matric Pass Rate</p>
+    </div>
+    <div class="card p-6 reveal text-center">
+      <div class="stat-value gold"><span data-count="37">0</span></div>
+      <p class="mt-2 text-sm uppercase tracking-wider text-slate-500">Bachelor Passes (2025)</p>
+    </div>
+    <div class="card p-6 reveal text-center">
+      <div class="stat-value slate"><span data-count="14">0</span></div>
+      <p class="mt-2 text-sm uppercase tracking-wider text-slate-500">Subjects Offered</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SUBJECTS TABLE ===================== -->
+<section class="container-x py-10">
+  <h2 class="text-2xl font-semibold mb-6 reveal">Curriculum and Subjects</h2>
+  <div class="card overflow-hidden">
+    <table class="w-full text-left text-sm">
+      <thead class="bg-[var(--slate-soft)] text-[var(--slate-deep)]">
+        <tr>
+          <th class="px-5 py-3 font-semibold">Learning Area</th>
+          <th class="px-5 py-3 font-semibold">Subjects</th>
+          <th class="px-5 py-3 font-semibold">Phase</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-[var(--line)]">
+        <tr>
+          <td class="px-5 py-3 font-medium">Languages</td>
+          <td class="px-5 py-3 text-slate-600">isiZulu (HL), English (FAL)</td>
+          <td class="px-5 py-3 text-slate-500">Gr 8–12</td>
+        </tr>
+        <tr>
+          <td class="px-5 py-3 font-medium">Mathematics</td>
+          <td class="px-5 py-3 text-slate-600">Mathematics, Mathematical Literacy</td>
+          <td class="px-5 py-3 text-slate-500">Gr 8–12</td>
+        </tr>
+        <tr>
+          <td class="px-5 py-3 font-medium">Sciences</td>
+          <td class="px-5 py-3 text-slate-600">Physical Sciences, Life Sciences, Natural Sciences</td>
+          <td class="px-5 py-3 text-slate-500">Gr 8–12</td>
+        </tr>
+        <tr>
+          <td class="px-5 py-3 font-medium">Commerce</td>
+          <td class="px-5 py-3 text-slate-600">Accounting, Business Studies, Economics</td>
+          <td class="px-5 py-3 text-slate-500">Gr 10–12</td>
+        </tr>
+        <tr>
+          <td class="px-5 py-3 font-medium">Humanities</td>
+          <td class="px-5 py-3 text-slate-600">Geography, History, Life Orientation</td>
+          <td class="px-5 py-3 text-slate-500">Gr 8–12</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===================== MATRIC RESULTS ===================== -->
+<section class="container-x py-10">
+  <h2 class="text-2xl font-semibold mb-6 reveal">Recent Matric Results</h2>
+  <div class="card overflow-hidden">
+    <table class="w-full text-left text-sm">
+      <thead class="bg-[var(--crimson)] text-white">
+        <tr>
+          <th class="px-5 py-3 font-semibold">Year</th>
+          <th class="px-5 py-3 font-semibold">Candidates</th>
+          <th class="px-5 py-3 font-semibold">Pass Rate</th>
+          <th class="px-5 py-3 font-semibold">Bachelor Passes</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-[var(--line)]">
+        <tr><td class="px-5 py-3 font-medium">2025</td><td class="px-5 py-3 text-slate-600">96</td><td class="px-5 py-3 text-slate-600">82%</td><td class="px-5 py-3 text-slate-600">37</td></tr>
+        <tr><td class="px-5 py-3 font-medium">2024</td><td class="px-5 py-3 text-slate-600">91</td><td class="px-5 py-3 text-slate-600">79%</td><td class="px-5 py-3 text-slate-600">31</td></tr>
+        <tr><td class="px-5 py-3 font-medium">2023</td><td class="px-5 py-3 text-slate-600">88</td><td class="px-5 py-3 text-slate-600">76%</td><td class="px-5 py-3 text-slate-600">28</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+{% endblock %}

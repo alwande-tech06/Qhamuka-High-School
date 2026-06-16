@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}About — Qhamuka High School{% endblock %}
+{% block nav_about %}is-active{% endblock %}
+
+{% block content %}
+
+<section class="container-x pt-14 pb-6">
+  <p class="crest-rule mb-3">Our Story</p>
+  <h1 class="text-4xl md:text-5xl font-semibold max-w-2xl">Rooted in Somopho. Reaching beyond.</h1>
+  <p class="mt-5 text-lg text-slate-600 max-w-2xl">
+    Qhamuka High School has grown into a pillar of the Empangeni community, serving learners
+    from Somopho Reserve and surrounding areas with a steadfast commitment to academic and personal growth.
+  </p>
+</section>
+
+<!-- ===================== STATS CARD GRID ===================== -->
+<section class="container-x py-10">
+  <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="card p-6 reveal">
+      <div class="stat-value"><span data-count="589">0</span></div>
+      <p class="mt-2 text-sm uppercase tracking-wider text-slate-500">Enrolled Learners</p>
+    </div>
+    <div class="card p-6 reveal">
+      <div class="stat-value gold"><span data-count="21">0</span></div>
+      <p class="mt-2 text-sm uppercase tracking-wider text-slate-500">Dedicated Educators</p>
+    </div>
+    <div class="card p-6 reveal">
+      <div class="stat-value slate"><span data-count="28">0</span></div>
+      <p class="mt-2 text-sm uppercase tracking-wider text-slate-500">Avg. Learners / Class</p>
+    </div>
+    <div class="card p-6 reveal">
+      <div class="stat-value"><span data-count="5">0</span></div>
+      <p class="mt-2 text-sm uppercase tracking-wider text-slate-500">Grades Offered</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== MISSION & HISTORY ===================== -->
+<section class="container-x py-10 grid gap-10 lg:grid-cols-2">
+  <div class="reveal">
+    <h2 class="text-2xl font-semibold mb-3">Our History</h2>
+    <p class="text-slate-600">
+      Established to serve the educational needs of the Somopho Reserve community, Qhamuka High School
+      has steadily expanded its facilities and programmes. From modest beginnings, the school has
+      cultivated a reputation for discipline, perseverance and pride in its learners' achievements.
+    </p>
+  </div>
+  <div class="reveal">
+    <h2 class="text-2xl font-semibold mb-3">Our Mission</h2>
+    <p class="text-slate-600">
+      To provide quality, accessible education that equips every learner with the knowledge, character
+      and confidence to contribute meaningfully to their communities and the nation - always guided by
+      our motto, <span class="text-[var(--gold-dark)] font-semibold">"Work towards Excellence."</span>
+    </p>
+  </div>
+</section>
+
+<!-- ===================== PRINCIPAL MESSAGE ===================== -->
+<section class="container-x py-10">
+  <div class="card p-8 md:p-10 reveal grid gap-8 md:grid-cols-[180px_1fr] items-start">
+    <div class="text-center">
+      <!-- Principal portrait placeholder -->
+      <div class="w-32 h-32 mx-auto rounded-full bg-[var(--slate-soft)] grid place-items-center text-3xl font-semibold text-[var(--slate-deep)]" style="font-family:var(--font-display)">P</div>
+      <p class="mt-3 font-semibold">The Principal</p>
+      <p class="text-sm text-slate-500">Qhamuka High School</p>
+    </div>
+    <div>
+      <p class="eyebrow mb-3">A Message from the Principal</p>
+      <blockquote class="text-lg text-slate-700 leading-relaxed" style="font-family:var(--font-display)">
+        "At Qhamuka, we believe every learner carries the seed of greatness. Our duty is to nurture it
+        with discipline, care and opportunity. We welcome you to a school where effort is honoured and
+        excellence is the shared goal of every learner, teacher and parent."
+      </blockquote>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

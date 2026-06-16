@@ -1,0 +1,57 @@
+{% extends "shared/dashboard_layout.html" %}
+{% block title %}Dashboard — Qhamuka Admin{% endblock %}
+{% block page_heading %}Dashboard{% endblock %}
+{% block rail_dashboard %}is-active{% endblock %}
+
+{% block content %}
+
+<!-- ===================== METRIC COUNTERS ===================== -->
+<div class="grid gap-5 sm:grid-cols-3 mb-8">
+  <div class="card p-6">
+    <div class="flex items-center justify-between">
+      <p class="text-sm text-slate-500">Total Notices</p>
+    </div>
+    <p class="stat-value mt-3">{{ stats.total_notices }}</p>
+  </div>
+
+  <div class="card p-6">
+    <div class="flex items-center justify-between">
+      <p class="text-sm text-slate-500">Media Uploads</p>
+    </div>
+    <p class="stat-value gold mt-3">{{ stats.media_uploads }}</p>
+  </div>
+
+  <div class="card p-6">
+    <div class="flex items-center justify-between">
+      <p class="text-sm text-slate-500">Unread Enquiries</p>
+    </div>
+    <p class="stat-value slate mt-3">{{ stats.unread_messages }}</p>
+  </div>
+</div>
+
+<!-- ===================== QUICK ACTIONS ===================== -->
+<div class="card p-6">
+  <h2 class="font-semibold mb-4">Quick Actions</h2>
+  <div class="flex flex-wrap gap-3">
+    <a href="{{ url_for('admin.announcements') }}" class="btn btn-primary">+ New Announcement</a>
+    <a href="{{ url_for('admin.gallery') }}" class="btn btn-gold">+ Upload Image</a>
+    <a href="{{ url_for('admin.submissions') }}" class="btn btn-ghost">View Messages</a>
+  </div>
+</div>
+
+<!-- ===================== RECENT ACTIVITY ===================== -->
+<div class="card p-6 mt-8">
+  <h2 class="font-semibold mb-4">Recent Activity</h2>
+  <ul class="divide-y divide-[var(--line)] text-sm">
+    {% for entry in recent_activity %}
+    <li class="py-3 flex justify-between">
+      <span class="text-slate-700">New announcement: "{{ entry.title }}"</span>
+      <span class="text-slate-400">{{ entry.date_posted | datefmt('%-d %b %Y') }}</span>
+    </li>
+    {% else %}
+    <li class="py-3 text-slate-400">No recent activity yet.</li>
+    {% endfor %}
+  </ul>
+</div>
+
+{% endblock %}
