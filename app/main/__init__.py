@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, flash
 
-from app.models import db, Announcement, Gallery, ContactSubmission
-from app.forms import ContactForm
+from app.models import db, Announcement, Gallery, ContactSubmission, MatricResult, ApplicationRequest
+from app.forms import ContactForm, ApplicationRequestForm
 
 main = Blueprint('main', __name__)
 
@@ -37,9 +37,31 @@ def admissions():
     return render_template('main/admissions.html')
 
 
+@main.route('/admissions/apply', methods=['GET', 'POST'])
+def apply():
+    form = ApplicationRequestForm()
+    if form.validate_on_submit():
+        db.session.add(ApplicationRequest(
+            parent_name=form.parent_name.data,
+            parent_email=form.parent_email.data,
+            parent_phone=form.parent_phone.data,
+            learner_first_name=form.learner_first_name.data,
+            learner_last_name=form.learner_last_name.data,
+            current_grade=form.current_grade.data,
+            grade_applying=form.grade_applying.data,
+            popia_consent=form.popia_consent.data,
+        ))
+        db.session.commit()
+        flash('Your application request has been received. The school office will be in touch.', 'success')
+        return redirect(url_for('main.admissions'))
+    return render_template('main/apply.html', form=form)
+
+
 @main.route('/academics')
 def academics():
-    return render_template('main/academics.html')
+    results = MatricResult.query.order_by(MatricResult.year.desc()).all()
+    latest = results[0] if results else None
+    return render_template('main/academics.html', results=results, latest=latest)
 
 
 @main.route('/gallery')

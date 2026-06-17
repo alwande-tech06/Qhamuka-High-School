@@ -17,12 +17,22 @@
 <section class="container-x py-8">
   <div class="grid gap-6 sm:grid-cols-3">
     <div class="card p-6 reveal text-center">
-      <div class="stat-value"><span data-count="82">0</span><span class="text-2xl align-top">%</span></div>
+      {% if latest %}
+      <div class="stat-value"><span data-count="{{ latest.pass_rate | round | int }}">0</span><span class="text-2xl align-top">%</span></div>
+      <p class="mt-2 text-sm uppercase tracking-wider text-slate-500">Matric Pass Rate ({{ latest.year }})</p>
+      {% else %}
+      <div class="stat-value text-slate-300">—</div>
       <p class="mt-2 text-sm uppercase tracking-wider text-slate-500">Matric Pass Rate</p>
+      {% endif %}
     </div>
     <div class="card p-6 reveal text-center">
-      <div class="stat-value gold"><span data-count="37">0</span></div>
-      <p class="mt-2 text-sm uppercase tracking-wider text-slate-500">Bachelor Passes (2025)</p>
+      {% if latest %}
+      <div class="stat-value gold"><span data-count="{{ latest.bachelor_passes }}">0</span></div>
+      <p class="mt-2 text-sm uppercase tracking-wider text-slate-500">Bachelor Passes ({{ latest.year }})</p>
+      {% else %}
+      <div class="stat-value gold text-slate-300">—</div>
+      <p class="mt-2 text-sm uppercase tracking-wider text-slate-500">Bachelor Passes</p>
+      {% endif %}
     </div>
     <div class="card p-6 reveal text-center">
       <div class="stat-value slate"><span data-count="14">0</span></div>
@@ -78,21 +88,36 @@
 <section class="container-x py-10">
   <h2 class="text-2xl font-semibold mb-6 reveal">Recent Matric Results</h2>
   <div class="card overflow-hidden">
+    {% if results %}
     <table class="w-full text-left text-sm">
       <thead class="bg-[var(--crimson)] text-white">
         <tr>
           <th class="px-5 py-3 font-semibold">Year</th>
           <th class="px-5 py-3 font-semibold">Candidates</th>
           <th class="px-5 py-3 font-semibold">Pass Rate</th>
-          <th class="px-5 py-3 font-semibold">Bachelor Passes</th>
+          <th class="px-5 py-3 font-semibold">Bachelor</th>
+          <th class="px-5 py-3 font-semibold">Diploma</th>
+          <th class="px-5 py-3 font-semibold">Higher Cert</th>
         </tr>
       </thead>
       <tbody class="divide-y divide-[var(--line)]">
-        <tr><td class="px-5 py-3 font-medium">2025</td><td class="px-5 py-3 text-slate-600">96</td><td class="px-5 py-3 text-slate-600">82%</td><td class="px-5 py-3 text-slate-600">37</td></tr>
-        <tr><td class="px-5 py-3 font-medium">2024</td><td class="px-5 py-3 text-slate-600">91</td><td class="px-5 py-3 text-slate-600">79%</td><td class="px-5 py-3 text-slate-600">31</td></tr>
-        <tr><td class="px-5 py-3 font-medium">2023</td><td class="px-5 py-3 text-slate-600">88</td><td class="px-5 py-3 text-slate-600">76%</td><td class="px-5 py-3 text-slate-600">28</td></tr>
+        {% for r in results %}
+        <tr>
+          <td class="px-5 py-3 font-medium">{{ r.year }}</td>
+          <td class="px-5 py-3 text-slate-600">{{ r.candidates }}</td>
+          <td class="px-5 py-3 text-slate-600">{{ "%g" % r.pass_rate }}%</td>
+          <td class="px-5 py-3 text-slate-600">{{ r.bachelor_passes }}</td>
+          <td class="px-5 py-3 text-slate-600">{{ r.diploma_passes }}</td>
+          <td class="px-5 py-3 text-slate-600">{{ r.higher_cert_passes }}</td>
+        </tr>
+        {% endfor %}
       </tbody>
     </table>
+    {% else %}
+    <div class="px-5 py-10 text-center text-slate-400">
+      Matric results will appear here once they have been published.
+    </div>
+    {% endif %}
   </div>
 </section>
 

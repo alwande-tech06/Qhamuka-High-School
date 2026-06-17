@@ -60,6 +60,38 @@ class Gallery(db.Model):
         return f'<Gallery {self.image_path}>'
 
 
+class MatricResult(db.Model):
+    __tablename__ = 'matric_results'
+    id = db.Column(db.Integer, primary_key=True)
+    year = db.Column(db.Integer, unique=True, nullable=False)
+    candidates = db.Column(db.Integer, nullable=False)
+    pass_rate = db.Column(db.Float, nullable=False)
+    bachelor_passes = db.Column(db.Integer, nullable=False)
+    diploma_passes = db.Column(db.Integer, nullable=False, default=0)
+    higher_cert_passes = db.Column(db.Integer, nullable=False, default=0)
+
+    def __repr__(self):
+        return f'<MatricResult {self.year}>'
+
+
+class ApplicationRequest(db.Model):
+    __tablename__ = 'application_requests'
+    id = db.Column(db.Integer, primary_key=True)
+    parent_name = db.Column(db.String(100), nullable=False)
+    parent_email = db.Column(db.String(120), nullable=False)
+    parent_phone = db.Column(db.String(20), nullable=False)
+    learner_first_name = db.Column(db.String(50), nullable=False)
+    learner_last_name = db.Column(db.String(50), nullable=False)
+    current_grade = db.Column(db.String(15), nullable=False)
+    grade_applying = db.Column(db.String(15), nullable=False)
+    popia_consent = db.Column(db.Boolean, nullable=False, default=False)
+    submitted_at = db.Column(db.DateTime, default=datetime.utcnow)
+    is_reviewed = db.Column(db.Boolean, default=False)
+
+    def __repr__(self):
+        return f'<ApplicationRequest {self.learner_first_name} {self.learner_last_name}>'
+
+
 class ContactSubmission(db.Model):
     __tablename__ = 'contact_submissions'
     id = db.Column(db.Integer, primary_key=True)

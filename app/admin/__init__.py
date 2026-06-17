@@ -6,8 +6,8 @@ from flask import (Blueprint, render_template, redirect, url_for, flash,
 from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
 
-from app.models import db, Announcement, Gallery, ContactSubmission
-from app.forms import AnnouncementForm, GalleryUploadForm
+from app.models import db, Announcement, Gallery, ContactSubmission, MatricResult, ApplicationRequest
+from app.forms import AnnouncementForm, GalleryUploadForm, MatricResultForm
 
 admin = Blueprint('admin', __name__)
 
@@ -135,3 +135,79 @@ def delete_message(message_id):
     db.session.commit()
     flash('Message deleted.', 'success')
     return redirect(url_for('admin.submissions'))
+
+
+@admin.route('/results', methods=['GET', 'POST'])
+@login_required
+def results():
+    form = MatricResultForm()
+    if form.validate_on_submit():
+        existing = MatricResult.query.filter_by(year=form.year.data).first()
+        if existing:
+            existing.candidates = form.candidates.data
+            existing.pass_rate = form.pass_rate.data
+            existing.bachelor_passes = form.bachelor_passes.data
+            existing.diploma_passes = form.diploma_passes.data
+            existing.higher_cert_passes = form.higher_cert_passes.data
+            flash(f'{form.year.data} result updated.', 'success')
+        else:
+            db.session.add(MatricResult(
+                year=form.year.data,
+                candidates=form.candidates.data,
+                pass_rate=form.pass_rate.data,
+                bachelor_passes=form.bachelor_passes.data,
+                diploma_passes=form.diploma_passes.data,
+                higher_cert_passes=form.higher_cert_passes.data,
+            ))
+            flash(f'{form.year.data} result added.', 'success')
+        db.session.commit()
+        return redirect(url_for('admin.results'))
+
+    all_results = MatricResult.query.order_by(MatricResult.year.desc()).all()
+    return render_template('admin/results.html', form=form, results=all_results)
+
+
+@admin.route('/results/<int:year>/delete', methods=['POST'])
+@login_required
+def delete_result(year):
+    result = MatricResult.query.filter_by(year=year).first_or_404()
+    db.session.delete(result)
+    db.session.commit()
+    flash(f'{year} result deleted.', 'success')
+    return redirect(url_for('admin.results'))
+
+
+@admin.route('/applications')
+@login_required
+def applications():
+    all_apps = (ApplicationRequest.query
+                .order_by(ApplicationRequest.submitted_at.desc())
+                .all())
+    unreviewed_count = ApplicationRequest.query.filter_by(is_reviewed=False).count()
+
+    selected = None
+    selected_id = request.args.get('selected', type=int)
+    if selected_id:
+        selected = ApplicationRequest.query.get_or_404(selected_id)
+
+    return render_template('admin/applications.html', applications=all_apps,
+                           unreviewed_count=unreviewed_count, selected=selected)
+
+
+@admin.route('/applications/<int:app_id>/review', methods=['POST'])
+@login_required
+def mark_application_reviewed(app_id):
+    app_req = ApplicationRequest.query.get_or_404(app_id)
+    app_req.is_reviewed = True
+    db.session.commit()
+    return redirect(url_for('admin.applications', selected=app_id))
+
+
+@admin.route('/applications/<int:app_id>/delete', methods=['POST'])
+@login_required
+def delete_application(app_id):
+    app_req = ApplicationRequest.query.get_or_404(app_id)
+    db.session.delete(app_req)
+    db.session.commit()
+    flash('Application request deleted.', 'success')
+    return redirect(url_for('admin.applications'))

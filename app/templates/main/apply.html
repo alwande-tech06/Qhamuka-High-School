@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block title %}Apply — Qhamuka High School{% endblock %}
+{% block nav_admissions %}is-active{% endblock %}
+
+{% block content %}
+
+<section class="container-x pt-14 pb-6">
+  <p class="crest-rule mb-3">Admissions</p>
+  <h1 class="text-4xl md:text-5xl font-semibold max-w-2xl">Application Request</h1>
+  <p class="mt-5 text-lg text-slate-600 max-w-2xl">
+    Complete this form to register your interest. The school office will contact you to confirm
+    your registration date and advise on the required documents to bring in person.
+  </p>
+</section>
+
+<section class="container-x py-10">
+  <div class="max-w-2xl">
+
+    <div class="card p-8">
+
+      <form action="{{ url_for('main.apply') }}" method="POST" class="space-y-6" novalidate>
+        {{ form.hidden_tag() }}
+
+        <!-- Parent / Guardian -->
+        <div>
+          <h2 class="font-semibold text-[var(--charcoal)] mb-4 pb-2 border-b border-[var(--line)]">Parent / Guardian Details</h2>
+          <div class="grid gap-4 sm:grid-cols-2">
+            <div class="field sm:col-span-2">
+              <label class="block text-sm font-medium mb-1.5">Full Name <span class="text-[var(--crimson)]">*</span></label>
+              {{ form.parent_name(placeholder="Full name of parent or guardian") }}
+              {% if form.parent_name.errors %}<p class="text-xs text-[var(--crimson)] mt-1">{{ form.parent_name.errors[0] }}</p>{% endif %}
+            </div>
+            <div class="field">
+              <label class="block text-sm font-medium mb-1.5">Email Address <span class="text-[var(--crimson)]">*</span></label>
+              {{ form.parent_email(type="email", placeholder="email@example.com") }}
+              {% if form.parent_email.errors %}<p class="text-xs text-[var(--crimson)] mt-1">{{ form.parent_email.errors[0] }}</p>{% endif %}
+            </div>
+            <div class="field">
+              <label class="block text-sm font-medium mb-1.5">Phone Number <span class="text-[var(--crimson)]">*</span></label>
+              {{ form.parent_phone(type="tel", placeholder="e.g. 071 234 5678") }}
+              {% if form.parent_phone.errors %}<p class="text-xs text-[var(--crimson)] mt-1">{{ form.parent_phone.errors[0] }}</p>{% endif %}
+            </div>
+          </div>
+        </div>
+
+        <!-- Learner -->
+        <div>
+          <h2 class="font-semibold text-[var(--charcoal)] mb-4 pb-2 border-b border-[var(--line)]">Learner Details</h2>
+          <div class="grid gap-4 sm:grid-cols-2">
+            <div class="field">
+              <label class="block text-sm font-medium mb-1.5">First Name <span class="text-[var(--crimson)]">*</span></label>
+              {{ form.learner_first_name(placeholder="First name") }}
+              {% if form.learner_first_name.errors %}<p class="text-xs text-[var(--crimson)] mt-1">{{ form.learner_first_name.errors[0] }}</p>{% endif %}
+            </div>
+            <div class="field">
+              <label class="block text-sm font-medium mb-1.5">Surname <span class="text-[var(--crimson)]">*</span></label>
+              {{ form.learner_last_name(placeholder="Surname") }}
+              {% if form.learner_last_name.errors %}<p class="text-xs text-[var(--crimson)] mt-1">{{ form.learner_last_name.errors[0] }}</p>{% endif %}
+            </div>
+            <div class="field">
+              <label class="block text-sm font-medium mb-1.5">Current Grade <span class="text-[var(--crimson)]">*</span></label>
+              {{ form.current_grade() }}
+              {% if form.current_grade.errors %}<p class="text-xs text-[var(--crimson)] mt-1">{{ form.current_grade.errors[0] }}</p>{% endif %}
+            </div>
+            <div class="field">
+              <label class="block text-sm font-medium mb-1.5">Grade Applying For <span class="text-[var(--crimson)]">*</span></label>
+              {{ form.grade_applying() }}
+              {% if form.grade_applying.errors %}<p class="text-xs text-[var(--crimson)] mt-1">{{ form.grade_applying.errors[0] }}</p>{% endif %}
+            </div>
+          </div>
+        </div>
+
+        <!-- POPIA Consent -->
+        <div class="rounded-lg border border-[var(--line)] bg-[var(--slate-soft)] p-4">
+          <p class="text-sm text-slate-600 mb-3">
+            <strong>POPIA Notice:</strong> Qhamuka High School collects this information solely to
+            process your application request, in accordance with the Protection of Personal
+            Information Act (POPIA), Act 4 of 2013. Your information will not be shared with
+            third parties without your consent.
+          </p>
+          <label class="flex items-start gap-3 cursor-pointer">
+            {{ form.popia_consent(class="mt-0.5 shrink-0") }}
+            <span class="text-sm font-medium">
+              I understand and consent to Qhamuka High School collecting and processing the
+              personal information provided above for the purpose of this application.
+              <span class="text-[var(--crimson)]">*</span>
+            </span>
+          </label>
+          {% if form.popia_consent.errors %}<p class="text-xs text-[var(--crimson)] mt-2">{{ form.popia_consent.errors[0] }}</p>{% endif %}
+        </div>
+
+        <p class="text-xs text-slate-500">Fields marked <span class="text-[var(--crimson)]">*</span> are required. No documents should be uploaded here - please bring originals and certified copies to the school office on your registration date.</p>
+
+        {{ form.submit(class="btn btn-primary w-full justify-center") }}
+      </form>
+
+    </div>
+
+    <p class="mt-6 text-sm text-slate-500 text-center">
+      Questions? <a href="{{ url_for('main.contact') }}" class="text-[var(--crimson)] hover:underline">Contact the school office</a>
+      or call <a href="tel:+27716575353" class="text-[var(--crimson)] hover:underline">+27 71 657 5353</a>.
+    </p>
+
+  </div>
+</section>
+
+{% endblock %}

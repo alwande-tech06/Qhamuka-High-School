@@ -1,0 +1,97 @@
+{% extends "shared/dashboard_layout.html" %}
+{% block title %}Matric Results — Qhamuka Admin{% endblock %}
+{% block page_heading %}Matric Results{% endblock %}
+{% block rail_results %}is-active{% endblock %}
+
+{% block content %}
+
+<div class="grid gap-8 lg:grid-cols-[1fr_320px]">
+
+  <!-- ===================== RESULTS TABLE ===================== -->
+  <div class="card overflow-hidden">
+    <div class="px-5 py-4 border-b border-[var(--line)]">
+      <h2 class="font-semibold">All Matric Results</h2>
+    </div>
+    <div class="overflow-x-auto">
+    <table class="w-full text-left text-sm whitespace-nowrap">
+      <thead class="bg-[var(--slate-soft)] text-[var(--slate-deep)]">
+        <tr>
+          <th class="px-4 py-3 font-semibold">Year</th>
+          <th class="px-4 py-3 font-semibold">Candidates</th>
+          <th class="px-4 py-3 font-semibold">Pass Rate</th>
+          <th class="px-4 py-3 font-semibold">Bachelor</th>
+          <th class="px-4 py-3 font-semibold">Diploma</th>
+          <th class="px-4 py-3 font-semibold">Higher Cert</th>
+          <th class="px-4 py-3 font-semibold text-right">Actions</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-[var(--line)]">
+        {% for r in results %}
+        <tr>
+          <td class="px-4 py-3 font-medium">{{ r.year }}</td>
+          <td class="px-4 py-3 text-slate-600">{{ r.candidates }}</td>
+          <td class="px-4 py-3 text-slate-600">{{ "%g" % r.pass_rate }}%</td>
+          <td class="px-4 py-3 text-slate-600">{{ r.bachelor_passes }}</td>
+          <td class="px-4 py-3 text-slate-600">{{ r.diploma_passes }}</td>
+          <td class="px-4 py-3 text-slate-600">{{ r.higher_cert_passes }}</td>
+          <td class="px-4 py-3 text-right">
+            <form action="{{ url_for('admin.delete_result', year=r.year) }}" method="POST" class="inline"
+                  onsubmit="return confirm('Delete {{ r.year }} result?');">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+              <button type="submit" class="text-[var(--crimson)] hover:underline text-sm">Delete</button>
+            </form>
+          </td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="7" class="px-4 py-8 text-center text-slate-400">No matric results added yet.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- ===================== ADD / UPDATE FORM ===================== -->
+  <div class="card p-6 h-fit">
+    <h2 class="font-semibold mb-1">Add / Update Result</h2>
+    <p class="text-xs text-slate-500 mb-4">Submitting an existing year updates it in place.</p>
+    <form action="{{ url_for('admin.results') }}" method="POST" class="space-y-4">
+      {{ form.hidden_tag() }}
+      <div class="field">
+        <label class="block text-sm font-medium mb-1.5">Year</label>
+        {{ form.year(placeholder="e.g. 2025") }}
+        {% if form.year.errors %}<p class="text-xs text-[var(--crimson)] mt-1">{{ form.year.errors[0] }}</p>{% endif %}
+      </div>
+      <div class="field">
+        <label class="block text-sm font-medium mb-1.5">Candidates</label>
+        {{ form.candidates(placeholder="e.g. 96") }}
+        {% if form.candidates.errors %}<p class="text-xs text-[var(--crimson)] mt-1">{{ form.candidates.errors[0] }}</p>{% endif %}
+      </div>
+      <div class="field">
+        <label class="block text-sm font-medium mb-1.5">Pass Rate (%)</label>
+        {{ form.pass_rate(placeholder="e.g. 82.5") }}
+        {% if form.pass_rate.errors %}<p class="text-xs text-[var(--crimson)] mt-1">{{ form.pass_rate.errors[0] }}</p>{% endif %}
+      </div>
+      <div class="field">
+        <label class="block text-sm font-medium mb-1.5">Bachelor Passes</label>
+        {{ form.bachelor_passes(placeholder="e.g. 37") }}
+        {% if form.bachelor_passes.errors %}<p class="text-xs text-[var(--crimson)] mt-1">{{ form.bachelor_passes.errors[0] }}</p>{% endif %}
+      </div>
+      <div class="field">
+        <label class="block text-sm font-medium mb-1.5">Diploma Passes</label>
+        {{ form.diploma_passes(placeholder="e.g. 28") }}
+        {% if form.diploma_passes.errors %}<p class="text-xs text-[var(--crimson)] mt-1">{{ form.diploma_passes.errors[0] }}</p>{% endif %}
+      </div>
+      <div class="field">
+        <label class="block text-sm font-medium mb-1.5">Higher Certificate Passes</label>
+        {{ form.higher_cert_passes(placeholder="e.g. 13") }}
+        {% if form.higher_cert_passes.errors %}<p class="text-xs text-[var(--crimson)] mt-1">{{ form.higher_cert_passes.errors[0] }}</p>{% endif %}
+      </div>
+      {{ form.submit(class="btn btn-primary w-full justify-center") }}
+    </form>
+  </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,109 @@
+{% extends "shared/dashboard_layout.html" %}
+{% block title %}Applications — Qhamuka Admin{% endblock %}
+{% block page_heading %}Application Requests{% endblock %}
+{% block rail_applications %}is-active{% endblock %}
+
+{% block content %}
+
+<div class="grid gap-6 lg:grid-cols-[1fr_1.4fr]">
+
+  <!-- ===================== LIST ===================== -->
+  <div class="card overflow-hidden h-fit">
+    <div class="px-5 py-4 border-b border-[var(--line)] flex items-center justify-between">
+      <h2 class="font-semibold">Inbox</h2>
+      <span class="text-xs px-2 py-0.5 rounded-full bg-[var(--crimson-soft)] text-[var(--crimson)]">{{ unreviewed_count }} new</span>
+    </div>
+    <ul class="divide-y divide-[var(--line)]">
+      {% for a in applications %}
+      <li>
+        <a href="{{ url_for('admin.applications', selected=a.id) }}"
+           class="flex gap-3 px-5 py-4 hover:bg-[var(--slate-soft)] transition
+                  {% if selected and selected.id == a.id %}bg-[var(--slate-soft)]{% endif %}">
+          <span class="mt-1 w-2 h-2 rounded-full shrink-0 {% if a.is_reviewed %}bg-slate-300{% else %}bg-[var(--crimson)]{% endif %}"></span>
+          <span class="min-w-0">
+            <span class="flex justify-between gap-2">
+              <span class="font-medium truncate">{{ a.learner_first_name }} {{ a.learner_last_name }}</span>
+              <span class="text-xs text-slate-400 shrink-0">{{ a.submitted_at | datefmt('%-d %b') }}</span>
+            </span>
+            <span class="block text-sm text-slate-500 truncate">{{ a.grade_applying }} &middot; {{ a.parent_name }}</span>
+          </span>
+        </a>
+      </li>
+      {% else %}
+      <li class="px-5 py-8 text-center text-slate-400 text-sm">No application requests yet.</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <!-- ===================== DETAIL ===================== -->
+  <div class="card p-6 h-fit">
+    {% if selected %}
+
+    <div class="flex items-start justify-between border-b border-[var(--line)] pb-4 mb-5">
+      <div>
+        <h2 class="font-semibold text-lg">{{ selected.learner_first_name }} {{ selected.learner_last_name }}</h2>
+        <p class="text-sm text-slate-500 mt-0.5">Submitted {{ selected.submitted_at | datefmt('%-d %B %Y') }}</p>
+      </div>
+      {% if selected.is_reviewed %}
+        <span class="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700">Reviewed</span>
+      {% else %}
+        <span class="text-xs px-2 py-0.5 rounded-full bg-[var(--crimson-soft)] text-[var(--crimson)]">New</span>
+      {% endif %}
+    </div>
+
+    <div class="grid sm:grid-cols-2 gap-x-8 gap-y-4 text-sm mb-6">
+      <div>
+        <p class="text-xs uppercase tracking-wider text-slate-400 mb-0.5">Learner</p>
+        <p class="font-medium">{{ selected.learner_first_name }} {{ selected.learner_last_name }}</p>
+      </div>
+      <div>
+        <p class="text-xs uppercase tracking-wider text-slate-400 mb-0.5">Grade Applying For</p>
+        <p class="font-medium">{{ selected.grade_applying }}</p>
+      </div>
+      <div>
+        <p class="text-xs uppercase tracking-wider text-slate-400 mb-0.5">Currently In</p>
+        <p>{{ selected.current_grade }}</p>
+      </div>
+      <div>
+        <p class="text-xs uppercase tracking-wider text-slate-400 mb-0.5">Parent / Guardian</p>
+        <p>{{ selected.parent_name }}</p>
+      </div>
+      <div>
+        <p class="text-xs uppercase tracking-wider text-slate-400 mb-0.5">Email</p>
+        <a href="mailto:{{ selected.parent_email }}" class="text-[var(--crimson)] hover:underline">{{ selected.parent_email }}</a>
+      </div>
+      <div>
+        <p class="text-xs uppercase tracking-wider text-slate-400 mb-0.5">Phone</p>
+        <a href="tel:{{ selected.parent_phone }}" class="text-[var(--crimson)] hover:underline">{{ selected.parent_phone }}</a>
+      </div>
+      <div class="sm:col-span-2">
+        <p class="text-xs uppercase tracking-wider text-slate-400 mb-0.5">POPIA Consent</p>
+        <p>{{ 'Given' if selected.popia_consent else 'Not given' }}</p>
+      </div>
+    </div>
+
+    <div class="flex flex-wrap gap-3">
+      <a href="mailto:{{ selected.parent_email }}" class="btn btn-primary">Email Parent</a>
+      {% if not selected.is_reviewed %}
+      <form action="{{ url_for('admin.mark_application_reviewed', app_id=selected.id) }}" method="POST" class="inline">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <button type="submit" class="btn btn-ghost">Mark as Reviewed</button>
+      </form>
+      {% endif %}
+      <form action="{{ url_for('admin.delete_application', app_id=selected.id) }}" method="POST" class="inline"
+            onsubmit="return confirm('Delete this application request?');">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <button type="submit" class="btn btn-ghost text-[var(--crimson)]">Delete</button>
+      </form>
+    </div>
+
+    {% else %}
+    <div class="text-center text-slate-400 py-16">
+      <p>Select an application from the list to view details.</p>
+    </div>
+    {% endif %}
+  </div>
+
+</div>
+
+{% endblock %}
