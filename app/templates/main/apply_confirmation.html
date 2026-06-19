@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Application Received — Qhamuka High School{% endblock %}
+{% block nav_admissions %}is-active{% endblock %}
+
+{% block content %}
+
+<section class="container-x pt-20 pb-16">
+  <div class="max-w-xl mx-auto text-center">
+
+    <div class="w-16 h-16 mx-auto rounded-full bg-green-100 grid place-items-center mb-6">
+      <svg width="32" height="32" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 16 13 23 26 9"/>
+      </svg>
+    </div>
+
+    <h1 class="text-3xl md:text-4xl font-semibold mb-3">Application Received</h1>
+    <p class="text-slate-600 text-lg mb-8">
+      Thank you, <strong>{{ application.parent_name }}</strong>. We have received your application
+      request for <strong>{{ application.learner_first_name }} {{ application.learner_last_name }}</strong>.
+    </p>
+
+    <!-- Reference number -->
+    <div class="card p-6 mb-8 text-left">
+      <p class="text-xs uppercase tracking-wider text-slate-400 mb-1">Your Reference Number</p>
+      <p class="text-3xl font-semibold tracking-widest text-[var(--crimson)] font-mono">{{ application.reference_number }}</p>
+      <p class="text-sm text-slate-500 mt-2">Save this number — you will need it to track your application status.</p>
+    </div>
+
+    <!-- Summary -->
+    <div class="card p-6 mb-8 text-left grid sm:grid-cols-2 gap-4 text-sm">
+      <div>
+        <p class="text-xs uppercase tracking-wider text-slate-400 mb-0.5">Learner</p>
+        <p class="font-medium">{{ application.learner_first_name }} {{ application.learner_last_name }}</p>
+      </div>
+      <div>
+        <p class="text-xs uppercase tracking-wider text-slate-400 mb-0.5">Grade Applying For</p>
+        <p class="font-medium">{{ application.grade_applying }}</p>
+      </div>
+      <div>
+        <p class="text-xs uppercase tracking-wider text-slate-400 mb-0.5">Contact Email</p>
+        <p>{{ application.parent_email }}</p>
+      </div>
+      <div>
+        <p class="text-xs uppercase tracking-wider text-slate-400 mb-0.5">Status</p>
+        <span class="inline-block text-xs px-2 py-0.5 rounded-full bg-[var(--slate-soft)] text-[var(--slate-deep)]">{{ application.status }}</span>
+      </div>
+    </div>
+
+    <!-- What happens next -->
+    <div class="card p-6 mb-8 text-left">
+      <h2 class="font-semibold mb-3">What happens next?</h2>
+      <ol class="space-y-3 text-sm text-slate-600">
+        <li class="flex gap-3">
+          <span class="w-5 h-5 shrink-0 rounded-full bg-[var(--crimson)] text-white text-xs grid place-items-center font-semibold">1</span>
+          The school office will review your request and contact you at <strong>{{ application.parent_email }}</strong> or <strong>{{ application.parent_phone }}</strong>.
+        </li>
+        <li class="flex gap-3">
+          <span class="w-5 h-5 shrink-0 rounded-full bg-[var(--crimson)] text-white text-xs grid place-items-center font-semibold">2</span>
+          You will be given a registration date and a list of documents to bring in person to the school office.
+        </li>
+        <li class="flex gap-3">
+          <span class="w-5 h-5 shrink-0 rounded-full bg-[var(--crimson)] text-white text-xs grid place-items-center font-semibold">3</span>
+          You can track your application status at any time using your reference number above.
+        </li>
+      </ol>
+    </div>
+
+    <div class="flex flex-wrap gap-3 justify-center">
+      <a href="{{ url_for('main.track') }}" class="btn btn-primary">Track My Application</a>
+      <a href="{{ url_for('main.home') }}" class="btn btn-ghost">Back to Home</a>
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}

@@ -26,6 +26,7 @@
               <span class="text-xs text-slate-400 shrink-0">{{ a.submitted_at | datefmt('%-d %b') }}</span>
             </span>
             <span class="block text-sm text-slate-500 truncate">{{ a.grade_applying }} &middot; {{ a.parent_name }}</span>
+            {% if a.reference_number %}<span class="block text-xs font-mono text-slate-400 truncate">{{ a.reference_number }}</span>{% endif %}
           </span>
         </a>
       </li>
@@ -43,12 +44,19 @@
       <div>
         <h2 class="font-semibold text-lg">{{ selected.learner_first_name }} {{ selected.learner_last_name }}</h2>
         <p class="text-sm text-slate-500 mt-0.5">Submitted {{ selected.submitted_at | datefmt('%-d %B %Y') }}</p>
+        {% if selected.reference_number %}
+        <p class="text-xs font-mono tracking-widest text-[var(--crimson)] mt-1">{{ selected.reference_number }}</p>
+        {% endif %}
       </div>
-      {% if selected.is_reviewed %}
-        <span class="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700">Reviewed</span>
-      {% else %}
-        <span class="text-xs px-2 py-0.5 rounded-full bg-[var(--crimson-soft)] text-[var(--crimson)]">New</span>
-      {% endif %}
+      {% set status_color = {
+        'Pending':    'bg-slate-100 text-slate-600',
+        'Approved':   'bg-green-100 text-green-700',
+        'Declined':   'bg-red-100 text-red-700',
+        'Waitlisted': 'bg-amber-100 text-amber-700'
+      } %}
+      <span class="text-xs px-2 py-0.5 rounded-full {{ status_color.get(selected.status, 'bg-slate-100 text-slate-600') }}">
+        {{ selected.status }}
+      </span>
     </div>
 
     <div class="grid sm:grid-cols-2 gap-x-8 gap-y-4 text-sm mb-6">
@@ -81,6 +89,19 @@
         <p>{{ 'Given' if selected.popia_consent else 'Not given' }}</p>
       </div>
     </div>
+
+    <!-- Status update -->
+    <form action="{{ url_for('admin.update_application_status', app_id=selected.id) }}" method="POST"
+          class="flex gap-2 items-center mb-5">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+      <label class="text-sm font-medium shrink-0">Update status:</label>
+      <select name="status" class="flex-1 border border-slate-200 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--crimson)]">
+        {% for s in ['Pending', 'Approved', 'Declined', 'Waitlisted'] %}
+        <option value="{{ s }}" {% if selected.status == s %}selected{% endif %}>{{ s }}</option>
+        {% endfor %}
+      </select>
+      <button type="submit" class="btn btn-primary py-1.5 text-sm">Save</button>
+    </form>
 
     <div class="flex flex-wrap gap-3">
       <a href="mailto:{{ selected.parent_email }}" class="btn btn-primary">Email Parent</a>

@@ -18,7 +18,8 @@
       where every learner is known, challenged and supported.
     </p>
     <div class="mt-8 flex flex-wrap gap-3">
-      <a href="{{ url_for('main.admissions') }}" class="btn btn-primary">Apply to Qhamuka</a>
+      <a href="{{ url_for('main.apply') }}" class="btn btn-primary">Apply Now</a>
+      <a href="{{ url_for('main.admissions') }}" class="btn btn-ghost text-white border-white/30 hover:bg-white/10">Admissions Info</a>
       <a href="{{ url_for('main.about') }}" class="btn btn-ghost text-white border-white/30 hover:bg-white/10">Our Story</a>
     </div>
   </div>
@@ -66,16 +67,16 @@
 <!-- ===================== QUICK STATS STRIP ===================== -->
 <section class="bg-[var(--slate-soft)]">
   <div class="container-x py-14 grid gap-8 sm:grid-cols-3 text-center">
-    <div class="reveal">
-      <div class="stat-value"><span data-count="589">0</span></div>
+    <div>
+      <div class="stat-value"><span data-count="589">589</span></div>
       <p class="mt-2 text-sm uppercase tracking-wider text-slate-500">Learners</p>
     </div>
-    <div class="reveal">
-      <div class="stat-value gold"><span data-count="21">0</span></div>
+    <div>
+      <div class="stat-value gold"><span data-count="21">21</span></div>
       <p class="mt-2 text-sm uppercase tracking-wider text-slate-500">Educators</p>
     </div>
-    <div class="reveal">
-      <div class="stat-value slate"><span data-count="5">0</span></div>
+    <div>
+      <div class="stat-value slate"><span data-count="5">5</span></div>
       <p class="mt-2 text-sm uppercase tracking-wider text-slate-500">Grades (8–12)</p>
     </div>
   </div>

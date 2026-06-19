@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, flash
+from flask import Blueprint, render_template, redirect, url_for, flash, Response
 
 from app.models import db, Announcement, Gallery, ContactSubmission, MatricResult, ApplicationRequest
 from app.forms import ContactForm, ApplicationRequestForm
@@ -41,7 +41,7 @@ def admissions():
 def apply():
     form = ApplicationRequestForm()
     if form.validate_on_submit():
-        db.session.add(ApplicationRequest(
+        application = ApplicationRequest(
             parent_name=form.parent_name.data,
             parent_email=form.parent_email.data,
             parent_phone=form.parent_phone.data,
@@ -50,11 +50,32 @@ def apply():
             current_grade=form.current_grade.data,
             grade_applying=form.grade_applying.data,
             popia_consent=form.popia_consent.data,
-        ))
+            reference_number=ApplicationRequest.generate_reference(),
+            status='Pending',
+        )
+        db.session.add(application)
         db.session.commit()
-        flash('Your application request has been received. The school office will be in touch.', 'success')
-        return redirect(url_for('main.admissions'))
+        return redirect(url_for('main.apply_confirmation', ref=application.reference_number))
     return render_template('main/apply.html', form=form)
+
+
+@main.route('/admissions/apply/confirmation/<ref>')
+def apply_confirmation(ref):
+    application = ApplicationRequest.query.filter_by(reference_number=ref).first_or_404()
+    return render_template('main/apply_confirmation.html', application=application)
+
+
+@main.route('/admissions/track', methods=['GET', 'POST'])
+def track():
+    from flask import request as flask_request
+    result = None
+    not_found = False
+    if flask_request.method == 'POST':
+        ref = flask_request.form.get('reference_number', '').strip().upper()
+        result = ApplicationRequest.query.filter_by(reference_number=ref).first()
+        if not result:
+            not_found = True
+    return render_template('main/track.html', result=result, not_found=not_found)
 
 
 @main.route('/academics')
@@ -68,6 +89,17 @@ def academics():
 def gallery():
     photos = Gallery.query.order_by(Gallery.date_uploaded.desc()).all()
     return render_template('main/gallery.html', photos=photos)
+
+
+@main.route('/robots.txt')
+def robots():
+    content = "User-agent: *\nDisallow: /admin\nDisallow: /auth\n"
+    return Response(content, mimetype='text/plain')
+
+
+@main.route('/privacy')
+def privacy():
+    return render_template('main/privacy.html')
 
 
 @main.route('/contact', methods=['GET', 'POST'])

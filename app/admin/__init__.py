@@ -20,6 +20,7 @@ def dashboard():
         'total_notices': Announcement.query.count(),
         'media_uploads': Gallery.query.count(),
         'unread_messages': ContactSubmission.query.filter_by(is_read=False).count(),
+        'pending_applications': ApplicationRequest.query.filter_by(is_reviewed=False).count(),
     }
     recent_activity = (Announcement.query
                        .order_by(Announcement.date_posted.desc())
@@ -200,6 +201,20 @@ def mark_application_reviewed(app_id):
     app_req = ApplicationRequest.query.get_or_404(app_id)
     app_req.is_reviewed = True
     db.session.commit()
+    return redirect(url_for('admin.applications', selected=app_id))
+
+
+@admin.route('/applications/<int:app_id>/status', methods=['POST'])
+@login_required
+def update_application_status(app_id):
+    app_req = ApplicationRequest.query.get_or_404(app_id)
+    new_status = request.form.get('status', '').strip()
+    allowed = {'Pending', 'Approved', 'Declined', 'Waitlisted'}
+    if new_status in allowed:
+        app_req.status = new_status
+        app_req.is_reviewed = True
+        db.session.commit()
+        flash(f'Status updated to {new_status}.', 'success')
     return redirect(url_for('admin.applications', selected=app_id))
 
 

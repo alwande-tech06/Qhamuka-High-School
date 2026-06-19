@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block title %}Track Application — Qhamuka High School{% endblock %}
+{% block nav_admissions %}is-active{% endblock %}
+
+{% block content %}
+
+<section class="container-x pt-14 pb-16 max-w-lg mx-auto">
+
+  <p class="crest-rule mb-3">Admissions</p>
+  <h1 class="text-3xl md:text-4xl font-semibold mb-2">Track Your Application</h1>
+  <p class="text-slate-600 mb-8">Enter the reference number you received after submitting your application.</p>
+
+  <!-- Search form -->
+  <form method="POST" action="{{ url_for('main.track') }}" class="card p-6 mb-6">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label for="reference_number" class="block text-sm font-medium mb-1">Reference Number</label>
+    <div class="flex gap-2">
+      <input
+        id="reference_number"
+        name="reference_number"
+        type="text"
+        placeholder="e.g. QHS-2026-A3F2B1"
+        class="flex-1 border border-slate-200 rounded-lg px-3 py-2 text-sm uppercase tracking-wider font-mono focus:outline-none focus:ring-2 focus:ring-[var(--crimson)]"
+        value="{{ request.form.get('reference_number', '') }}"
+        autocomplete="off"
+        required
+      >
+      <button type="submit" class="btn btn-primary whitespace-nowrap">Look up</button>
+    </div>
+  </form>
+
+  <!-- Not found -->
+  {% if not_found %}
+  <div class="rounded-lg bg-red-50 border border-red-200 px-5 py-4 text-sm text-red-700 mb-6">
+    No application was found with that reference number. Please check the number and try again.
+  </div>
+  {% endif %}
+
+  <!-- Result -->
+  {% if result %}
+  <div class="card p-6">
+    <div class="flex items-start justify-between gap-4 mb-5">
+      <div>
+        <p class="text-xs uppercase tracking-wider text-slate-400 mb-0.5">Reference Number</p>
+        <p class="text-xl font-semibold font-mono tracking-widest text-[var(--crimson)]">{{ result.reference_number }}</p>
+      </div>
+      {% set status_color = {
+        'Pending':  'bg-slate-100 text-slate-600',
+        'Approved': 'bg-green-100 text-green-700',
+        'Declined': 'bg-red-100  text-red-700',
+        'Waitlisted': 'bg-amber-100 text-amber-700'
+      } %}
+      <span class="inline-block text-sm font-medium px-3 py-1 rounded-full {{ status_color.get(result.status, 'bg-slate-100 text-slate-600') }}">
+        {{ result.status }}
+      </span>
+    </div>
+
+    <div class="grid sm:grid-cols-2 gap-4 text-sm mb-5">
+      <div>
+        <p class="text-xs uppercase tracking-wider text-slate-400 mb-0.5">Learner</p>
+        <p class="font-medium">{{ result.learner_first_name }} {{ result.learner_last_name }}</p>
+      </div>
+      <div>
+        <p class="text-xs uppercase tracking-wider text-slate-400 mb-0.5">Grade Applying For</p>
+        <p class="font-medium">{{ result.grade_applying }}</p>
+      </div>
+      <div>
+        <p class="text-xs uppercase tracking-wider text-slate-400 mb-0.5">Submitted</p>
+        <p>{{ result.submitted_at.strftime('%d %B %Y') }}</p>
+      </div>
+      <div>
+        <p class="text-xs uppercase tracking-wider text-slate-400 mb-0.5">Contact Phone</p>
+        <p>{{ result.parent_phone }}</p>
+      </div>
+    </div>
+
+    {% if result.status == 'Pending' %}
+    <p class="text-sm text-slate-500 bg-slate-50 rounded-lg px-4 py-3">
+      Your application is being reviewed. The school will contact you at <strong>{{ result.parent_email }}</strong> once a decision has been made.
+    </p>
+    {% elif result.status == 'Approved' %}
+    <p class="text-sm text-green-700 bg-green-50 rounded-lg px-4 py-3">
+      Your application has been approved. Please contact the school office to confirm your registration date and required documents.
+    </p>
+    {% elif result.status == 'Declined' %}
+    <p class="text-sm text-red-700 bg-red-50 rounded-lg px-4 py-3">
+      Unfortunately your application was not successful at this time. Please contact the school office for further information.
+    </p>
+    {% elif result.status == 'Waitlisted' %}
+    <p class="text-sm text-amber-700 bg-amber-50 rounded-lg px-4 py-3">
+      Your application is on the waiting list. The school will contact you if a place becomes available.
+    </p>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  <p class="text-xs text-slate-400 mt-6 text-center">
+    Need help? Call us on <a href="tel:+27356940166" class="underline">035 694 0166</a> or
+    <a href="https://wa.me/27716575353" class="underline" target="_blank" rel="noopener">WhatsApp</a>.
+  </p>
+
+</section>
+
+{% endblock %}

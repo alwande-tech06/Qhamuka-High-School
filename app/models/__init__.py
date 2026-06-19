@@ -1,3 +1,5 @@
+import random
+import string
 from datetime import datetime
 
 from flask_sqlalchemy import SQLAlchemy
@@ -87,9 +89,17 @@ class ApplicationRequest(db.Model):
     popia_consent = db.Column(db.Boolean, nullable=False, default=False)
     submitted_at = db.Column(db.DateTime, default=datetime.utcnow)
     is_reviewed = db.Column(db.Boolean, default=False)
+    reference_number = db.Column(db.String(20), unique=True)
+    status = db.Column(db.String(20), nullable=False, default='Pending')
+
+    @staticmethod
+    def generate_reference():
+        chars = string.ascii_uppercase + string.digits
+        suffix = ''.join(random.choices(chars, k=6))
+        return f'QHS-{datetime.utcnow().year}-{suffix}'
 
     def __repr__(self):
-        return f'<ApplicationRequest {self.learner_first_name} {self.learner_last_name}>'
+        return f'<ApplicationRequest {self.reference_number}>'
 
 
 class ContactSubmission(db.Model):

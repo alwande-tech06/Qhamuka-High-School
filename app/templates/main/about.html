@@ -16,20 +16,20 @@
 <!-- ===================== STATS CARD GRID ===================== -->
 <section class="container-x py-10">
   <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-    <div class="card p-6 reveal">
-      <div class="stat-value"><span data-count="589">0</span></div>
+    <div class="card p-6">
+      <div class="stat-value"><span data-count="589">589</span></div>
       <p class="mt-2 text-sm uppercase tracking-wider text-slate-500">Enrolled Learners</p>
     </div>
-    <div class="card p-6 reveal">
-      <div class="stat-value gold"><span data-count="21">0</span></div>
+    <div class="card p-6">
+      <div class="stat-value gold"><span data-count="21">21</span></div>
       <p class="mt-2 text-sm uppercase tracking-wider text-slate-500">Dedicated Educators</p>
     </div>
-    <div class="card p-6 reveal">
-      <div class="stat-value slate"><span data-count="28">0</span></div>
+    <div class="card p-6">
+      <div class="stat-value slate"><span data-count="28">28</span></div>
       <p class="mt-2 text-sm uppercase tracking-wider text-slate-500">Avg. Learners / Class</p>
     </div>
-    <div class="card p-6 reveal">
-      <div class="stat-value"><span data-count="5">0</span></div>
+    <div class="card p-6">
+      <div class="stat-value"><span data-count="5">5</span></div>
       <p class="mt-2 text-sm uppercase tracking-wider text-slate-500">Grades Offered</p>
     </div>
   </div>
@@ -59,10 +59,13 @@
 <section class="container-x py-10">
   <div class="card p-8 md:p-10 reveal grid gap-8 md:grid-cols-[180px_1fr] items-start">
     <div class="text-center">
-      <!-- Principal portrait placeholder -->
-      <div class="w-32 h-32 mx-auto rounded-full bg-[var(--slate-soft)] grid place-items-center text-3xl font-semibold text-[var(--slate-deep)]" style="font-family:var(--font-display)">P</div>
-      <p class="mt-3 font-semibold">The Principal</p>
-      <p class="text-sm text-slate-500">Qhamuka High School</p>
+      <img src="{{ url_for('static', filename='images/principal.jpg') }}"
+           alt="Mrs Mthembu"
+           class="w-32 h-32 mx-auto rounded-full object-cover object-top"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='grid'">
+      <div class="w-32 h-32 mx-auto rounded-full bg-[var(--slate-soft)] place-items-center text-3xl font-semibold text-[var(--slate-deep)] hidden" style="font-family:var(--font-display)">M</div>
+      <p class="mt-3 font-semibold">Mrs Mthembu</p>
+      <p class="text-sm text-slate-500">Principal</p>
     </div>
     <div>
       <p class="eyebrow mb-3">A Message from the Principal</p>

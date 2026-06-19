@@ -6,7 +6,7 @@
 {% block content %}
 
 <!-- ===================== METRIC COUNTERS ===================== -->
-<div class="grid gap-5 sm:grid-cols-3 mb-8">
+<div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8">
   <div class="card p-6">
     <div class="flex items-center justify-between">
       <p class="text-sm text-slate-500">Total Notices</p>
@@ -27,6 +27,12 @@
     </div>
     <p class="stat-value slate mt-3">{{ stats.unread_messages }}</p>
   </div>
+  <div class="card p-6">
+    <div class="flex items-center justify-between">
+      <p class="text-sm text-slate-500">Pending Applications</p>
+    </div>
+    <p class="stat-value mt-3" style="color:var(--gold-dark)">{{ stats.pending_applications }}</p>
+  </div>
 </div>
 
 <!-- ===================== QUICK ACTIONS ===================== -->
@@ -36,6 +42,7 @@
     <a href="{{ url_for('admin.announcements') }}" class="btn btn-primary">+ New Announcement</a>
     <a href="{{ url_for('admin.gallery') }}" class="btn btn-gold">+ Upload Image</a>
     <a href="{{ url_for('admin.submissions') }}" class="btn btn-ghost">View Messages</a>
+    <a href="{{ url_for('admin.applications') }}" class="btn btn-ghost">View Applications</a>
   </div>
 </div>
 

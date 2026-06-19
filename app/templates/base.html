@@ -90,6 +90,13 @@
         </div>
         <p class="text-sm text-slate-400">A place of learning grounded in community and discipline, in the heart of KwaZulu-Natal.</p>
         <p class="mt-4 text-[var(--gold)] font-semibold italic" style="font-family:var(--font-display)">"Work towards Excellence"</p>
+        <div class="mt-4 flex gap-3">
+          <a href="https://www.facebook.com/profile.php?id=100063940934035" target="_blank" rel="noopener"
+             class="text-xs text-slate-400 hover:text-[var(--gold)] transition">Facebook</a>
+          <span class="text-slate-600">&middot;</span>
+          <a href="https://www.tiktok.com/@qhamuka.high.scho" target="_blank" rel="noopener"
+             class="text-xs text-slate-400 hover:text-[var(--gold)] transition">TikTok</a>
+        </div>
       </div>
 
       <div>
@@ -114,7 +121,11 @@
     <div class="border-t border-white/10">
       <div class="container-x py-4 text-xs text-slate-500 flex flex-col sm:flex-row justify-between gap-2">
         <span>&copy; <span id="year"></span> Qhamuka High School. All rights reserved.</span>
-        <span>Somopho Reserve &middot; Empangeni &middot; KZN</span>
+        <span class="flex gap-3">
+          <a href="{{ url_for('main.privacy') }}" class="hover:text-slate-300">Privacy Policy</a>
+          <span>&middot;</span>
+          <span>Somopho Reserve &middot; Empangeni &middot; KZN</span>
+        </span>
       </div>
     </div>
   </footer>
